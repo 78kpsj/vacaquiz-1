@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAY 13 · Word Master 어휘 테스트</title>
+<title>DAY 14 · Word Master 어휘 문제지</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700;900&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -20,345 +20,359 @@
       var(--paper);
     color:var(--ink); font-family:'Noto Sans KR', sans-serif;
     min-height:100vh; display:flex; flex-direction:column; align-items:center;
-    padding:28px 16px 60px;
+    padding:28px 16px 80px;
   }
-  .wrap{width:100%; max-width:640px;}
+  .wrap{width:100%; max-width:760px;}
   .masthead{ display:flex; align-items:baseline; justify-content:space-between; border-bottom:3px solid var(--ink); padding-bottom:10px; margin-bottom:22px;}
   .masthead .brand{ font-family:'Space Mono', monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft);}
   .masthead .daytag{ font-family:'Space Mono', monospace; font-weight:700; font-size:13px; background:var(--navy); color:#fff; padding:3px 9px; border-radius:2px;}
   h1.title{ font-family:'Noto Serif KR', serif; font-weight:900; font-size:clamp(28px,7vw,40px); line-height:1.15; margin:0 0 6px;}
-  .subtitle{ color:var(--ink-soft); font-size:15px; margin-bottom:28px;}
-  .subtitle b{ color:var(--ink);}
-  .screen{ display:none; }
-  .screen.active{ display:block; }
-  .modes{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px;}
-  @media (max-width:480px){ .modes{grid-template-columns:1fr;} }
-  .mode-card{ background:var(--card); border:2px solid var(--ink); border-radius:4px; padding:18px 16px; box-shadow:var(--shadow); cursor:pointer; transition:transform .12s ease; text-align:left;}
-  .mode-card:hover{ transform:translate(-2px,-2px); }
-  .mode-card:active{ transform:translate(1px,1px); box-shadow:1px 1px 0 rgba(35,35,35,.9);}
-  .mode-card .m-eyebrow{ font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--red); text-transform:uppercase; margin-bottom:6px;}
-  .mode-card .m-title{ font-family:'Noto Serif KR',serif; font-weight:700; font-size:20px; margin-bottom:8px;}
-  .mode-card .m-desc{ font-size:13px; color:var(--ink-soft); line-height:1.5; }
-  .mode-card .m-mix{ margin-top:10px; font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft);}
-  .stamp{ display:inline-block; margin-top:26px; font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft); border:1px dashed var(--ink-soft); padding:6px 10px; border-radius:2px;}
-  .quiz-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .qcount{ font-family:'Space Mono',monospace; font-size:13px; color:var(--ink-soft); }
-  .score-live{ font-family:'Space Mono',monospace; font-size:13px; color:var(--green); font-weight:700;}
-  .progress-track{ height:8px; background:var(--red-soft); border:1px solid var(--ink); border-radius:5px; overflow:hidden; margin-bottom:22px;}
-  .progress-fill{ height:100%; background:var(--navy); width:0%; transition:width .25s ease;}
-  .qtype-tag{ display:inline-block; font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:4px 9px; border:1.5px solid var(--ink); border-radius:2px; margin-bottom:14px;}
-  .qtype-meaning{ background:#EFEAD8; }
-  .qtype-syn{ background:#E4EDE6; }
-  .qtype-ant{ background:#F3E2DC; }
-  .card{ background:var(--card); border:2px solid var(--ink); border-radius:4px; padding:26px 22px; box-shadow:var(--shadow); margin-bottom:20px;}
-  .prompt-label{ font-size:13px; color:var(--ink-soft); margin-bottom:10px; }
-  .qword{ font-family:'Space Mono',monospace; font-weight:700; font-size:clamp(24px,7.5vw,34px); color:var(--navy); word-break:break-word;}
-  .choices{ display:flex; flex-direction:column; gap:10px; }
-  .choice{ text-align:left; width:100%; font-size:16px; font-family:'Noto Sans KR',sans-serif; background:var(--card); border:2px solid var(--ink); border-radius:4px; padding:13px 16px; cursor:pointer; display:flex; align-items:center; gap:10px; transition:background .1s ease, transform .05s ease;}
-  .choice:hover{ background:#FBF6EC; }
-  .choice:active{ transform:scale(.99); }
-  .choice .idx{ font-family:'Space Mono',monospace; font-weight:700; font-size:13px; width:22px; height:22px; border:1.5px solid var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .choice.correct{ background:#E4EDE6; border-color:var(--green); }
-  .choice.correct .idx{ background:var(--green); color:#fff; border-color:var(--green);}
-  .choice.wrong{ background:#F3E2DC; border-color:var(--red); }
-  .choice.wrong .idx{ background:var(--red); color:#fff; border-color:var(--red);}
-  .choice.disabled{ cursor:default; }
-  .choice.dim{ opacity:.55; }
-  .next-btn{ margin-top:16px; width:100%; padding:14px; font-family:'Space Mono',monospace; font-weight:700; font-size:14px; letter-spacing:.05em; text-transform:uppercase; background:var(--navy); color:#fff; border:2px solid var(--ink); border-radius:4px; cursor:pointer; display:none;}
-  .next-btn.show{ display:block; }
-  .next-btn:active{ transform:translate(1px,1px); }
-  .result-hero{ text-align:center; padding:20px 0 8px; }
-  .result-hero .r-eyebrow{ font-family:'Space Mono',monospace; color:var(--ink-soft); font-size:13px; letter-spacing:.1em;}
-  .result-hero h2{ font-family:'Noto Serif KR',serif; font-weight:900; font-size:30px; margin:8px 0 4px;}
-  .result-score{ font-family:'Space Mono',monospace; font-weight:700; font-size:52px; color:var(--navy); margin:10px 0 2px;}
-  .result-pct{ font-family:'Space Mono',monospace; color:var(--red); font-weight:700; }
-  .review-box{ margin-top:26px; }
-  .review-box h3{ font-family:'Noto Serif KR',serif; font-size:17px; border-bottom:2px solid var(--ink); padding-bottom:6px; margin-bottom:12px;}
-  .review-item{ background:var(--card); border:1.5px solid var(--ink); border-radius:4px; padding:12px 14px; margin-bottom:9px; display:flex; flex-direction:column; gap:3px;}
-  .review-item .rw-word{ font-family:'Space Mono',monospace; font-weight:700; color:var(--navy);}
-  .review-item .rw-meaning{ font-size:14px; }
-  .review-item .rw-extra{ font-size:12.5px; color:var(--ink-soft); }
-  .review-empty{ font-size:14px; color:var(--ink-soft); padding:10px 2px; }
-  .result-actions{ display:flex; gap:10px; margin-top:24px; }
-  .btn{ flex:1; padding:13px; font-family:'Space Mono',monospace; font-weight:700; font-size:13px; letter-spacing:.04em; text-transform:uppercase; border-radius:4px; cursor:pointer; border:2px solid var(--ink);}
-  .btn-primary{ background:var(--red); color:#fff; }
-  .btn-ghost{ background:var(--card); color:var(--ink); }
-  .btn:active{ transform:translate(1px,1px); }
-  footer.foot{ margin-top:40px; text-align:center; font-family:'Space Mono',monospace; font-size:11px; color:var(--ink-soft); letter-spacing:.03em;}
+  .subtitle{ color:var(--ink-soft); font-size:15px; margin-bottom:10px;}
+  .meta-line{
+    font-size:14px; color:var(--ink-soft); margin-bottom:26px; padding-bottom:14px;
+    border-bottom:1px dashed var(--ink-soft);
+  }
+  .meta-line span{ margin-right:22px; }
+
+  .toc{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:30px;
+  }
+  .toc a{
+    font-family:'Space Mono',monospace; font-size:12px; text-decoration:none;
+    color:var(--ink); background:var(--card); border:1.5px solid var(--ink);
+    padding:5px 10px; border-radius:3px;
+  }
+  .toc a:hover{ background:var(--navy); color:#fff; }
+
+  section.block{ margin-bottom:38px; }
+  .block h2{
+    font-family:'Noto Serif KR', serif; font-weight:700; font-size:23px;
+    border-bottom:2px solid var(--ink); padding-bottom:8px; margin-bottom:6px;
+    scroll-margin-top:16px;
+  }
+  .block .desc{ font-size:14px; color:var(--ink-soft); margin-bottom:16px; }
+
+  .qlist{ list-style:none; margin:0; padding:0; }
+  .qlist li{
+    display:flex; align-items:baseline; gap:10px; padding:9px 0;
+    border-bottom:1px dotted var(--paper-line);
+  }
+  .qlist li .qnum{
+    font-family:'Space Mono',monospace; font-weight:700; color:var(--red);
+    width:26px; flex-shrink:0; text-align:right;
+  }
+  .qlist li .qword{ font-family:'Space Mono',monospace; font-weight:700; color:var(--navy); min-width:150px; }
+  .qlist li .qblank{
+    flex:1; border-bottom:1.5px solid var(--ink); min-height:20px;
+  }
+  .qlist li .qnote{ font-size:12.5px; color:var(--ink-soft); }
+
+  .bank{
+    background:var(--card); border:2px solid var(--ink); border-radius:4px;
+    padding:16px 18px; margin-bottom:18px; box-shadow:var(--shadow);
+    font-size:14px; line-height:2;
+  }
+  .bank b{ font-family:'Space Mono',monospace; color:var(--red); margin-right:4px;}
+
+  .sentence-list{ list-style:none; margin:0; padding:0; counter-reset:s; }
+  .sentence-list li{
+    counter-increment:s; padding:10px 0 10px 30px; position:relative;
+    border-bottom:1px dotted var(--paper-line); font-size:15.5px; line-height:1.6;
+  }
+  .sentence-list li::before{
+    content: counter(s) "."; position:absolute; left:0; top:10px;
+    font-family:'Space Mono',monospace; font-weight:700; color:var(--red);
+  }
+  .sentence-list .hint{ color:var(--ink-soft); font-size:13px; display:block; margin-top:2px;}
+
+  details.answer{
+    margin-top:44px; background:var(--card); border:2px solid var(--ink);
+    border-radius:4px; box-shadow:var(--shadow);
+  }
+  details.answer > summary{
+    cursor:pointer; list-style:none; padding:16px 20px;
+    font-family:'Space Mono',monospace; font-weight:700; letter-spacing:.04em;
+    text-transform:uppercase; font-size:14px; color:#fff; background:var(--navy);
+    border-radius:2px 2px 0 0;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  details.answer > summary::-webkit-details-marker{ display:none; }
+  details.answer > summary::after{ content:"열기 / 닫기"; font-size:11px; opacity:.8; }
+  .answer-body{ padding:20px 22px 26px; }
+  .answer-body h3{
+    font-family:'Noto Serif KR', serif; font-size:17px; margin:22px 0 8px;
+    border-bottom:1.5px solid var(--ink); padding-bottom:5px;
+  }
+  .answer-body h3:first-child{ margin-top:0; }
+  .ans-list{ margin:0; padding-left:0; list-style:none; font-size:14px; line-height:1.9;}
+  .ans-list li{ padding:2px 0; }
+  .ans-list li b{ color:var(--navy); font-family:'Space Mono',monospace; margin-right:4px; }
+
+  footer.foot{
+    margin-top:50px; text-align:center; font-family:'Space Mono',monospace;
+    font-size:11px; color:var(--ink-soft); letter-spacing:.03em;
+  }
+
+  @media print{
+    details.answer{ page-break-before: always; }
+    .toc{ display:none; }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <div class="masthead">
     <span class="brand">Word Master 하이스트 · 자체 제작</span>
-    <span class="daytag">DAY 13</span>
+    <span class="daytag">DAY 14</span>
   </div>
 
-  <section id="screen-start" class="screen active">
-    <h1 class="title">DAY 13 어휘 테스트</h1>
-    <p class="subtitle">뜻 · 유의어 · 반의어 문항으로 구성된 <b>DAY 13 워크시트</b>와 동일한 문제입니다.</p>
-    <div class="modes">
-      <div class="mode-card" data-mode="quick">
-        <div class="m-eyebrow">Quick</div>
-        <div class="m-title">빠른 점검</div>
-        <div class="m-desc">61문항 중 20문항을 무작위로 뽑아 빠르게 점검합니다.</div>
-        <div class="m-mix">뜻·유의어·반의어 랜덤 20문항</div>
-      </div>
-      <div class="mode-card" data-mode="full">
-        <div class="m-eyebrow">Full</div>
-        <div class="m-title">전체 점검</div>
-        <div class="m-desc">워크시트와 동일한 순서로 전체 61문항을 풉니다.</div>
-        <div class="m-mix">뜻 30 · 유의어 24 · 반의어 7</div>
-      </div>
-    </div>
-    <div class="stamp">30 WORDS · 61 QUESTIONS · No.0361–0390</div>
+  <h1 class="title">DAY 14 영단어 문제지</h1>
+  <p class="subtitle">뜻 · 유의어 · 반의어 · 혼동어 · 빈칸 채우기로 구성된 워크시트입니다.</p>
+  <div class="meta-line">
+    <span>이름: ________________</span>
+    <span>날짜: ________________</span>
+    <span>점수: ______ / 30</span>
+  </div>
+
+  <nav class="toc">
+    <a href="#a">A. 뜻 쓰기</a>
+    <a href="#b">B. 유의어</a>
+    <a href="#c">C. 반의어</a>
+    <a href="#d">D. 혼동어</a>
+    <a href="#e">E. 빈칸 채우기</a>
+    <a href="#answer">정답지</a>
+  </nav>
+
+  <!-- A -->
+  <section class="block" id="a">
+    <h2>A. 우리말 뜻 쓰기</h2>
+    <p class="desc">다음 영단어의 우리말 뜻을 쓰세요.</p>
+    <ul class="qlist" id="listA"></ul>
   </section>
 
-  <section id="screen-quiz" class="screen">
-    <div class="quiz-top">
-      <span class="qcount" id="qcount">Q1 / 61</span>
-      <span class="score-live" id="scoreLive">맞은 개수 0</span>
+  <!-- B -->
+  <section class="block" id="b">
+    <h2>B. 유의어(동의어) 짝짓기</h2>
+    <p class="desc">아래〈보기〉에서 각 단어의 유의어를 골라 기호를 쓰세요.</p>
+    <div class="bank">
+      <b>①</b>separate, segregate &nbsp; <b>②</b>taste, flavor &nbsp; <b>③</b>skillful, competent &nbsp; <b>④</b>scatter, diffuse<br>
+      <b>⑤</b>fury, outrage &nbsp; <b>⑥</b>complete, unbroken &nbsp; <b>⑦</b>expansion, enlargement &nbsp; <b>⑧</b>legal<br>
+      <b>⑨</b>family, relatives &nbsp; <b>⑩</b>grip, grasp &nbsp; <b>⑪</b>out-of-date, old-fashioned &nbsp; <b>⑫</b>delicate, fine<br>
+      <b>⑬</b>inequality, imbalance &nbsp; <b>⑭</b>reproduce &nbsp; <b>⑮</b>impose, execute &nbsp; <b>⑯</b>discharge, excretion<br>
+      <b>⑰</b>bring about, cause &nbsp; <b>⑱</b>be useful, be of help &nbsp; <b>⑲</b>arise, derive &nbsp; <b>⑳</b>abuse, suffering
     </div>
-    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    <span class="qtype-tag" id="qtypeTag">뜻 고르기</span>
-    <div class="card">
-      <div class="prompt-label" id="promptLabel">이 단어의 알맞은 뜻은?</div>
-      <div id="promptMain" class="qword">word</div>
-      <div class="choices" id="choices"></div>
-    </div>
-    <button class="next-btn" id="nextBtn">다음 문항 →</button>
+    <ul class="qlist" id="listB"></ul>
   </section>
 
-  <section id="screen-result" class="screen">
-    <div class="result-hero">
-      <div class="r-eyebrow">TEST RESULT</div>
-      <h2>수고하셨어요!</h2>
-      <div class="result-score" id="resultScore">0 / 0</div>
-      <div class="result-pct" id="resultPct">0% CORRECT</div>
-    </div>
-    <div class="review-box">
-      <h3>다시 볼 단어</h3>
-      <div id="reviewList"></div>
-    </div>
-    <div class="result-actions">
-      <button class="btn btn-ghost" id="retryBtn">다시 풀기</button>
-      <button class="btn btn-primary" id="homeBtn">처음으로</button>
-    </div>
+  <!-- C -->
+  <section class="block" id="c">
+    <h2>C. 반의어(반대말) 쓰기</h2>
+    <p class="desc">다음 단어의 반의어를 영어로 쓰세요. (본문에 제시된 반의어 기준)</p>
+    <ul class="qlist" id="listC"></ul>
   </section>
 
-  <footer class="foot">WORD MASTER 하이스트 · DAY 13 · 지문 및 예문은 교재 원문을 각색하여 재구성함</footer>
+  <!-- D -->
+  <section class="block" id="d">
+    <h2>D. 혼동어 구별하기</h2>
+    <p class="desc">다음 단어와 혼동하기 쉬운 단어를 쓰고, 그 뜻도 함께 쓰세요.</p>
+    <ul class="qlist" id="listD"></ul>
+  </section>
+
+  <!-- E -->
+  <section class="block" id="e">
+    <h2>E. 빈칸 채우기</h2>
+    <p class="desc">아래 문장의 빈칸에 알맞은 단어를 A의 단어 목록에서 골라 적절한 형태로 쓰세요.</p>
+    <ol class="sentence-list" id="listE"></ol>
+  </section>
+
+  <!-- ANSWER KEY -->
+  <details class="answer" id="answer">
+    <summary>정답지 (ANSWER KEY)</summary>
+    <div class="answer-body">
+      <h3>A. 우리말 뜻</h3>
+      <ul class="ans-list" id="ansA"></ul>
+      <h3>B. 유의어</h3>
+      <ul class="ans-list" id="ansB"></ul>
+      <h3>C. 반의어</h3>
+      <ul class="ans-list" id="ansC"></ul>
+      <h3>D. 혼동어</h3>
+      <ul class="ans-list" id="ansD"></ul>
+      <h3>E. 빈칸 채우기</h3>
+      <ul class="ans-list" id="ansE"></ul>
+    </div>
+  </details>
+
+  <footer class="foot">WORD MASTER 하이스트 · DAY 14 · 지문 및 예문은 교재 원문을 각색하여 재구성함</footer>
 </div>
 
 <script>
-/* ============ DATA (워크시트 A/B/C 문항과 동일) ============ */
-const CIRC = ["①","②","③","④"];
-
-// [word, meaning(정답 뜻/참고용), choices, answerIndex(1-based)]
-const MEANING_Q = [
-["divergent","서로 다른, 벗어난",["슬퍼하다","서로 다른, 벗어난","매우 귀중한","촉진하다"],2],
-["facilitate","가능하게 하다, 촉진하다",["애원하다","응축되다, 요약하다","가능하게 하다, 촉진하다","저지르다"],3],
-["conservative","보수적인, 전통적인",["보수적인, 전통적인","실현 가능한","정반대의","불필요한"],1],
-["mourn","슬퍼하다, 애도하다",["밀다, 찌르다","슬퍼하다, 애도하다","빼다","스며들다"],2],
-["feasible","실현 가능한",["실현 가능한","거의 없는, 부족한","매우 귀중한","늪, 습지"],1],
-["commit","저지르다, 맡기다, 약속하다",["주다, 수여하다","찬미하다","저지르다, 맡기다, 약속하다","압도하다"],3],
-["redundant","불필요한, 여분의",["불필요한, 여분의","그다음의, 차후의","서로 다른","슬퍼하다"],1],
-["plead","애원하다, 간청하다",["촉진하다, 조성하다","애원하다, 변론하다","빼다","응축되다"],2],
-["condense","응축되다, 요약하다",["응축되다, 요약하다","스며들다","밀치다","승인하다"],1],
-["foster","촉진하다, 양육하다",["늪, 습지","촉진하다, 양육하다","적, 반대자","당뇨병"],2],
-["parliament","의회, 국회",["환대","감소, 하락","의회, 국회","무리, 송이"],3],
-["invaluable","매우 귀중한",["매우 귀중한","거의 없는","실현 가능한","보수적인"],1],
-["scant","거의 없는, 부족한",["거의 없는, 부족한","정반대의","그다음의","찬미하다"],1],
-["offend","감정을 상하게 하다, 범죄를 저지르다",["빼다","감정을 상하게 하다, 범죄를 저지르다","스며들다","주다, 수여하다"],2],
-["glorify","찬미하다, 미화하다",["찬미하다, 미화하다","압도하다, 쇄도하다","슬퍼하다","애원하다"],1],
-["subtract","빼다",["빼다","촉진하다","승인하다","밀다, 찌르다"],1],
-["cluster","송이, 무리",["적, 반대자","늪, 습지","송이, 무리","당뇨병"],3],
-["foe","적, 반대자",["적, 반대자","의회","환대","추진력"],1],
-["swamp","늪, 습지 / 압도하다",["늪, 습지 / 압도하다","의회","당뇨병","정반대의"],1],
-["deliberate","고의의, 신중한 / 숙고하다",["고의의, 신중한 / 숙고하다","실현 가능한","불필요한","그다음의"],1],
-["grant","주다, 승인하다 / 보조금",["주다, 승인하다 / 보조금","빼다","압도하다","촉진하다"],1],
-["diabetes","당뇨병",["환대","당뇨병","침체","늪"],2],
-["hospitality","환대",["환대","당뇨병","추진력","침투"],1],
-["downturn","감소, 하락 / 침체",["감소, 하락 / 침체","의회","찬미","무리"],1],
-["subsequent","그다음의, 차후의",["그다음의, 차후의","정반대의","실현 가능한","고의의"],1],
-["inverse","정반대의, 역의",["정반대의, 역의","그다음의","매우 귀중한","서로 다른"],1],
-["thrust","밀다, 찌르다 / 추진력",["밀다, 찌르다 / 추진력","빼다","승인하다","촉진하다"],1],
-["permeate","스며들다, 침투하다",["스며들다, 침투하다","압도하다","애원하다","응축되다"],1],
-["see to it that","반드시 ~하도록 (조처)하다",["~에 관하여","반드시 ~하도록 (조처)하다","~을 당연하게 여기다","~을 대신하여"],2],
-["with[in] respect to","~에 관하여, ~에 대하여",["반드시 ~하도록 하다","~에 관하여, ~에 대하여","~에도 불구하고","~을 위하여"],2],
+const WORDS = [
+["intact","온전한, 손상되지 않은"],
+["thrift","절약, 검약"],
+["extension","확대, 확장 / (기간의) 연장 / 내선(번호)"],
+["alchemy","연금술, (물건을 변질시키는) 비법"],
+["isolate","격리하다, 고립시키다"],
+["considerate","사려 깊은, 배려하는"],
+["disparity","격차, 불균형"],
+["breed","새끼를 낳다, 번식하다 / 사육하다, 양육하다 / (불화 등을) 일으키다(v) / 종류, 품종(n)"],
+["savor","맛, 풍미(n) / 맛보다, 음미하다(v)"],
+["judicial","사법[재판]의"],
+["outdated","구식의, 시대에 뒤떨어진"],
+["subtle","미묘한, 포착하기 어려운"],
+["disperse","흩어지다, 퍼뜨리다"],
+["kin","친척, 친족"],
+["enforce","(법률 등을) 시행하다, 집행하다 / (행동 등을) 강요하다"],
+["glare","눈부시게 빛나다, 노려보다(v) / 눈부신 빛, 섬광, 노려봄(n)"],
+["discrete","별개의, 분리된"],
+["corporate","기업의, 법인의 / 단체의, 집합적인, 공동의"],
+["paddle","(보트의) 노(n) / 노를 젓다, 첨벙거리다(v)"],
+["proficient","능숙한, 숙련된"],
+["rage","격노, 분노(n) / 몹시 화를 내다 / (폭풍·전투 등이) 맹렬히 계속되다(v)"],
+["synonymous","같은 뜻의, 동의[유의]어의"],
+["drainage","배수(시설)"],
+["asteroid","소행성"],
+["torture","고문, 심한 고통(n) / 고문하다, 괴롭히다(v)"],
+["originate","비롯되다, 유래하다 / 고안하다, 발명하다"],
+["secretion","분비(물)"],
+["clutch","움켜쥠 / (세력의) 손아귀(n) / 움켜잡다, 붙들다(v)"],
+["give rise to","~을 일으키다, ~이 생기게 하다"],
+["come in handy","쓸모가 있다, 도움이 되다"],
 ];
 
-const SYN_Q = [
-["divergent",["convergent","varying","following","abundant"],2],
-["facilitate",["grieve","beg","promote","deduct"],3],
-["conservative",["conventional","radical","intentional","insufficient"],1],
-["mourn",["grieve","overwhelm","entreat","pervade"],1],
-["feasible",["priceless","practicable","reverse","surplus"],2],
-["redundant",["unnecessary","following","intentional","precious"],1],
-["plead",["beg, entreat","deduct","concentrate","nurture"],1],
-["condense",["concentrate, compress","pervade","entrust","shove"],1],
-["foster",["nurture, promote","deduct","defend","insult"],1],
-["parliament",["congress","marsh","subsidy","warmth"],1],
-["invaluable",["priceless","valueless","deficient","abundant"],1],
-["scant",["insufficient","abundant","precious","following"],1],
-["offend",["insult","adore","entreat","nurture"],1],
-["glorify",["praise, adore","overwhelm","deduct","entrust"],1],
-["subtract",["deduct","add","compress","promote"],1],
-["cluster",["bunch, group","marsh","subsidy","recession"],1],
-["foe",["enemy, rival","council","warmth","driving force"],1],
-["swamp",["marsh, wetland","council","recession","subsidy"],1],
-["downturn",["recession, decrease","warmth","subsidy","following"],1],
-["subsequent",["following, later","previous","opposite","intentional"],1],
-["inverse",["reverse, opposite","following","intentional","precious"],1],
-["permeate",["pervade, penetrate","overwhelm","entreat","deduct"],1],
-["see to it that",["make sure that","regard","take for granted","in spite of"],1],
-["with[in] respect to",["regarding, concerning","make sure that","instead of","in favor of"],1],
+const SYN_ITEMS = [
+["intact","⑥ complete, unbroken"],
+["thrift","(예시) saving, prudence"],
+["extension","⑦ expansion, enlargement"],
+["isolate","① separate, segregate"],
+["considerate","유의어 없음 (참고용)"],
+["disparity","⑬ inequality, imbalance"],
+["breed","⑭ reproduce"],
+["savor","② taste, flavor"],
+["judicial","⑧ legal"],
+["outdated","⑪ out-of-date, old-fashioned"],
+["subtle","⑫ delicate, fine"],
+["disperse","④ scatter, diffuse"],
+["kin","⑨ family, relatives"],
+["enforce","⑮ impose, execute"],
+["corporate","(예시) incorporated, collective, joint"],
+["proficient","③ skillful, competent"],
+["rage","⑤ fury, outrage"],
+["drainage","⑯ discharge, excretion (참고: 원 유의어는 sewage)"],
+["torture","⑳ abuse, suffering"],
+["originate","⑲ arise, derive"],
+["secretion","⑯ discharge, excretion"],
+["clutch","⑩ grip, grasp"],
+["give rise to","⑰ bring about, cause"],
+["come in handy","⑱ be useful, be of help"],
 ];
 
-const ANT_Q = [
-["divergent",["convergent","varying","intentional","following"],1],
-["conservative",["radical","conventional","traditional","practicable"],1],
-["invaluable",["priceless","valueless","deficient","abundant"],2],
-["scant",["insufficient","deficient","abundant","precious"],3],
-["subtract",["deduct","add","compress","concentrate"],2],
-["deliberate",["intentional","planned","accidental","cautious"],3],
-["subsequent",["following","succeeding","later","previous"],4],
+const ANT_ITEMS = [
+["outdated","up-to-date (= modern, contemporary)"],
+["discrete","connected"],
+["synonymous","antonymous"],
 ];
 
-function buildAll(){
-  const list = [];
-  MEANING_Q.forEach(([w,m,opts,ans])=> list.push({
-    type:"meaning", tagLabel:"뜻 고르기", tagClass:"qtype-meaning",
-    promptLabel:"이 단어의 알맞은 뜻은?", word:w, meaning:m,
-    choices:opts, answer:opts[ans-1]
-  }));
-  SYN_Q.forEach(([w,opts,ans])=>{
-    const m = (MEANING_Q.find(x=>x[0]===w)||[,"",[],1])[1];
-    list.push({
-      type:"syn", tagLabel:"유의어 고르기", tagClass:"qtype-syn",
-      promptLabel:"이 단어의 유의어로 알맞은 것은?", word:w, meaning:m,
-      choices:opts, answer:opts[ans-1]
-    });
-  });
-  ANT_Q.forEach(([w,opts,ans])=>{
-    const m = (MEANING_Q.find(x=>x[0]===w)||[,"",[],1])[1];
-    list.push({
-      type:"ant", tagLabel:"반의어 고르기", tagClass:"qtype-ant",
-      promptLabel:"이 단어의 반의어로 알맞은 것은?", word:w, meaning:m,
-      choices:opts, answer:opts[ans-1]
-    });
-  });
-  return list;
-}
-const ALL_QUESTIONS = buildAll();
+const CONFUSE_ITEMS = [
+["thrift","theft","절도, 도둑질"],
+["considerate","considerable","상당한, 많은"],
+["savor","savior","구세주, 구원자"],
+["subtle","subtitle","자막, 자막 처리를 하다"],
+["enforce","reinforce","강화하다, 보강하다"],
+["discrete","discreet / discredit","신중한, 조심스러운 / 신빙성을 없애다, 불명예"],
+["corporate","cooperate","협력하다, 협동하다"],
+["originate","organize","준비하다, 정리하다, (단체를) 조직하다"],
+];
 
-function shuffle(arr){
-  const a = arr.slice();
-  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-  return a;
+const FILL_ITEMS = [
+["Some plants rely on animals to _______ their seeds far and wide.","흩어지다, 퍼뜨리다","disperse"],
+["In the past, penalties for pollution were often hard to _______.","시행하다, 집행하다","enforce"],
+["This old software feels completely _______ compared to modern tools.","구식의","outdated"],
+["The captives endured days of intense and brutal _______.","고문, 심한 고통","torture"],
+["A well-equipped toolkit can _______ during unexpected emergencies.","쓸모가 있다, 도움이 되다","come in handy"],
+["Every tree grows differently, _______ great differences in productivity.","~을 일으키다, ~이 생기게 하다","giving rise to"],
+["She checked all the guests' allergies, showing how _______ she was.","사려 깊은","considerate"],
+["The sensor can detect _______ changes in the environment.","미묘한","subtle"],
+["Despite the accident, her faith remained _______.","온전한, 손상되지 않은","intact"],
+["He _______ at the noisy group, hoping they would notice.","노려보다","glared"],
+];
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
 }
 
-/* ============ state ============ */
-let quiz = [], qIndex = 0, correctCount = 0, wrongList = [], answered = false, lastMode = 'quick';
-
-const screenStart = document.getElementById('screen-start');
-const screenQuiz = document.getElementById('screen-quiz');
-const screenResult = document.getElementById('screen-result');
-const qcountEl = document.getElementById('qcount');
-const scoreLiveEl = document.getElementById('scoreLive');
-const progressFillEl = document.getElementById('progressFill');
-const qtypeTagEl = document.getElementById('qtypeTag');
-const promptLabelEl = document.getElementById('promptLabel');
-const promptMainEl = document.getElementById('promptMain');
-const choicesEl = document.getElementById('choices');
-const nextBtn = document.getElementById('nextBtn');
-
-document.querySelectorAll('.mode-card').forEach(card=>{
-  card.addEventListener('click', ()=> startQuiz(card.dataset.mode));
+/* A */
+const listA = document.getElementById('listA');
+WORDS.forEach(([w],i)=>{
+  const li = el('li');
+  li.appendChild(el('span','qnum', `${i+1}.`));
+  li.appendChild(el('span','qword', w));
+  li.appendChild(el('span','qblank'));
+  listA.appendChild(li);
 });
-nextBtn.addEventListener('click', ()=>{
-  qIndex++;
-  if(qIndex >= quiz.length){ showResult(); } else { renderQuestion(); }
+
+/* B */
+const listB = document.getElementById('listB');
+SYN_ITEMS.forEach(([w],i)=>{
+  const li = el('li');
+  li.appendChild(el('span','qnum', `${i+1}.`));
+  li.appendChild(el('span','qword', w));
+  li.appendChild(el('span','qblank'));
+  listB.appendChild(li);
 });
-document.getElementById('retryBtn').addEventListener('click', ()=> startQuiz(lastMode));
-document.getElementById('homeBtn').addEventListener('click', ()=> switchScreen(screenStart));
 
-function switchScreen(target){
-  [screenStart, screenQuiz, screenResult].forEach(s=>s.classList.remove('active'));
-  target.classList.add('active');
-}
+/* C */
+const listC = document.getElementById('listC');
+ANT_ITEMS.forEach(([w],i)=>{
+  const li = el('li');
+  li.appendChild(el('span','qnum', `${i+1}.`));
+  li.appendChild(el('span','qword', w+' ↔'));
+  li.appendChild(el('span','qblank'));
+  listC.appendChild(li);
+});
 
-function startQuiz(mode){
-  lastMode = mode;
-  quiz = mode === 'full' ? ALL_QUESTIONS.slice() : shuffle(ALL_QUESTIONS).slice(0,20);
-  qIndex = 0; correctCount = 0; wrongList = [];
-  switchScreen(screenQuiz);
-  renderQuestion();
-}
+/* D */
+const listD = document.getElementById('listD');
+CONFUSE_ITEMS.forEach(([w],i)=>{
+  const li = el('li');
+  li.appendChild(el('span','qnum', `${i+1}.`));
+  li.appendChild(el('span','qword', w+' ↔'));
+  li.appendChild(el('span','qblank'));
+  listD.appendChild(li);
+});
 
-function renderQuestion(){
-  answered = false;
-  const q = quiz[qIndex];
-  qcountEl.textContent = `Q${qIndex+1} / ${quiz.length}`;
-  scoreLiveEl.textContent = `맞은 개수 ${correctCount}`;
-  progressFillEl.style.width = `${(qIndex/quiz.length)*100}%`;
-  qtypeTagEl.textContent = q.tagLabel;
-  qtypeTagEl.className = `qtype-tag ${q.tagClass}`;
-  promptLabelEl.textContent = q.promptLabel;
-  promptMainEl.textContent = q.word;
-  choicesEl.innerHTML = '';
-  nextBtn.classList.remove('show');
-  q.choices.forEach((choiceText, i)=>{
-    const btn = document.createElement('button');
-    btn.className = 'choice';
-    btn.innerHTML = `<span class="idx">${CIRC[i]}</span><span>${choiceText}</span>`;
-    btn.addEventListener('click', ()=> handleAnswer(btn, choiceText, q));
-    choicesEl.appendChild(btn);
-  });
-}
+/* E */
+const listE = document.getElementById('listE');
+FILL_ITEMS.forEach(([sent,hint])=>{
+  const li = el('li');
+  li.innerHTML = `${sent}<span class="hint">힌트: ${hint}</span>`;
+  listE.appendChild(li);
+});
 
-function handleAnswer(btn, choiceText, q){
-  if(answered) return;
-  answered = true;
-  const isCorrect = choiceText === q.answer;
-  if(isCorrect) correctCount++; else wrongList.push(q);
-  [...choicesEl.children].forEach(c=>{
-    c.classList.add('disabled');
-    c.style.pointerEvents = 'none';
-    const text = c.textContent.trim().slice(1);
-    if(text === q.answer){ c.classList.add('correct'); }
-    else if(c === btn){ c.classList.add('wrong'); }
-    else { c.classList.add('dim'); }
-  });
-  scoreLiveEl.textContent = `맞은 개수 ${correctCount}`;
-  nextBtn.classList.add('show');
-  nextBtn.textContent = (qIndex === quiz.length-1) ? '결과 보기 →' : '다음 문항 →';
-}
-
-function showResult(){
-  progressFillEl.style.width = '100%';
-  switchScreen(screenResult);
-  const total = quiz.length;
-  document.getElementById('resultScore').textContent = `${correctCount} / ${total}`;
-  const pct = total ? Math.round((correctCount/total)*100) : 0;
-  document.getElementById('resultPct').textContent = `${pct}% CORRECT`;
-  const reviewList = document.getElementById('reviewList');
-  reviewList.innerHTML = '';
-  const uniqueWrong = [...new Map(wrongList.map(q=>[q.word+q.type,q])).values()];
-  if(uniqueWrong.length === 0){
-    reviewList.innerHTML = '<div class="review-empty">모든 단어를 맞혔어요! 완벽합니다 🎉</div>';
-  } else {
-    uniqueWrong.forEach(q=>{
-      const div = document.createElement('div');
-      div.className = 'review-item';
-      div.innerHTML = `
-        <span class="rw-word">${q.word}</span>
-        <span class="rw-meaning">${q.meaning}</span>
-        <span class="rw-extra">${q.tagLabel} · 정답: ${q.answer}</span>
-      `;
-      reviewList.appendChild(div);
-    });
-  }
-}
+/* ANSWERS */
+const ansA = document.getElementById('ansA');
+WORDS.forEach(([w,m],i)=>{
+  ansA.appendChild(el('li','', `<b>${i+1}.</b> ${w} — ${m}`));
+});
+const ansB = document.getElementById('ansB');
+SYN_ITEMS.forEach(([w,a],i)=>{
+  ansB.appendChild(el('li','', `<b>${i+1}.</b> ${w} — ${a}`));
+});
+const ansC = document.getElementById('ansC');
+ANT_ITEMS.forEach(([w,a],i)=>{
+  ansC.appendChild(el('li','', `<b>${i+1}.</b> ${w} ↔ ${a}`));
+});
+const ansD = document.getElementById('ansD');
+CONFUSE_ITEMS.forEach(([w,c,m],i)=>{
+  ansD.appendChild(el('li','', `<b>${i+1}.</b> ${w} ↔ ${c} : ${m}`));
+});
+const ansE = document.getElementById('ansE');
+FILL_ITEMS.forEach(([sent,hint,ans],i)=>{
+  ansE.appendChild(el('li','', `<b>${i+1}.</b> ${ans}`));
+});
 </script>
 </body>
 </html>
