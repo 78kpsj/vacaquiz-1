@@ -107,7 +107,7 @@ header p{color:var(--txd);font-size:12px;}
   <header>
     <div class="total-badge">DAY 01 ~ 15 · 종합</div>
     <h1>어휘 종합 퀴즈 🏆</h1>
-    <p>0001~0450 · 450개 단어 전체 범위</p>
+    <p>0001~0450 · 매 회 랜덤 300문제 출제</p>
   </header>
 
   <div class="filter-label">DAY 범위 선택</div>
@@ -710,8 +710,9 @@ function setType(t){
   startQuiz();
 }
 
+var QUIZ_LIMIT=300;
 function startQuiz(){
-  qs=shuffle(buildPool());
+  qs=shuffle(buildPool()).slice(0,QUIZ_LIMIT);
   qi=nOk=nNg=0; wrongs=[]; answered=false;
   dayStats={};
   for(var i=1;i<=15;i++) dayStats[i]={ok:0,total:0};
