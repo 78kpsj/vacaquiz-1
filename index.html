@@ -346,7 +346,7 @@ function shuffle(a){
   return b;
 }
 function startQuiz(){
-  qs=shuffle(buildPool());
+  qs=shuffle(buildPool()).slice(0,50);
   qi=nOk=nNg=0;wrongs=[];answered=false;
   updateScores();updatePg();
   document.getElementById('result').style.display='none';
